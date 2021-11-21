@@ -2,22 +2,29 @@ package at.htl.movietheater.entity;
 
 import javax.persistence.*;
 
-@NamedQueries({
-        @NamedQuery(
-                name = "Show.findLastShow",
-                query = "select s from MT_SHOW s order by s.id desc"
-        )
-})
+@Entity(name = "MT_SHOW")
+@SequenceGenerator(name = "showSeq", initialValue = 1000)
 public class Show {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "showSeq")
+    @Column(name = "SH_ID")
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "SH_MO_ID")
     private Movie movie;
 
+    @ManyToOne
+    @JoinColumn(name = "SH_TH_ID")
     private Theater theater;
 
+    @OneToOne
+    @JoinColumn(name = "SH_PREV_SHOW_ID")
     private Show prevShow;
 
+    @OneToOne
+    @JoinColumn(name = "SH_NEXT_SHOW_ID")
     private Show nextShow;
 
     public Show() {
